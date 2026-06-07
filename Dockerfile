@@ -28,8 +28,6 @@ COPY package.json ./
 # Use railway config as the active iii-config (0.0.0.0 bind, open CORS, /data persistence)
 COPY iii-config.railway.yaml ./iii-config.yaml
 
-VOLUME ["/data"]
-
 # Set PORT=3111 in Railway Variables to match this.
 EXPOSE 3111
 
