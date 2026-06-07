@@ -73,7 +73,13 @@ workers:
 EOF
 chown "$RUN_AS" "$III_CONFIG"
 
-if [ ! -s "$HMAC_FILE" ]; then
+if [ -n "${AGENTMEMORY_SECRET:-}" ]; then
+  # Env var already set — write to file and use it
+  umask 077
+  printf '%s\n' "$AGENTMEMORY_SECRET" > "$HMAC_FILE"
+  chmod 600 "$HMAC_FILE"
+  chown "$RUN_AS" "$HMAC_FILE"
+elif [ ! -s "$HMAC_FILE" ]; then
   SECRET="$(openssl rand -hex 32)"
   umask 077
   printf '%s\n' "$SECRET" > "$HMAC_FILE"
